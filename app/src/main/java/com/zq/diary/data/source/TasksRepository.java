@@ -258,21 +258,21 @@ public class TasksRepository implements TasksDataSource {
 
     @Override
     public void deleteAllTasks() {
-        mTasksRemoteDataSource.deleteAllTasks();
-        mTasksLocalDataSource.deleteAllTasks();
-
-        if (mCachedTasks == null) {
-            mCachedTasks = new LinkedHashMap<>();
-        }
-        mCachedTasks.clear();
+//        mTasksRemoteDataSource.deleteAllTasks();
+//        mTasksLocalDataSource.deleteAllTasks();
+//
+//        if (mCachedTasks == null) {
+//            mCachedTasks = new LinkedHashMap<>();
+//        }
+//        mCachedTasks.clear();
     }
 
     @Override
     public void deleteTask(@NonNull String taskId) {
-        mTasksRemoteDataSource.deleteTask(checkNotNull(taskId));
-        mTasksLocalDataSource.deleteTask(checkNotNull(taskId));
-
-        mCachedTasks.remove(taskId);
+//        mTasksRemoteDataSource.deleteTask(checkNotNull(taskId));
+//        mTasksLocalDataSource.deleteTask(checkNotNull(taskId));
+//
+//        mCachedTasks.remove(taskId);
     }
 
     private void getTasksFromRemoteDataSource(@NonNull final LoadTasksCallback callback) {
