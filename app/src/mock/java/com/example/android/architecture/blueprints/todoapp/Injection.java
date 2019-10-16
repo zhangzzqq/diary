@@ -19,21 +19,22 @@ package com.example.android.architecture.blueprints.todoapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.example.android.architecture.blueprints.todoapp.addedittask.domain.usecase.DeleteTask;
-import com.example.android.architecture.blueprints.todoapp.addedittask.domain.usecase.GetTask;
-import com.example.android.architecture.blueprints.todoapp.addedittask.domain.usecase.SaveTask;
+import com.zq.diary.UseCaseHandler;
+import com.zq.diary.addedittask.domain.usecase.DeleteTask;
+import com.zq.diary.addedittask.domain.usecase.GetTask;
+import com.zq.diary.addedittask.domain.usecase.SaveTask;
 import com.example.android.architecture.blueprints.todoapp.data.FakeTasksRemoteDataSource;
-import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource;
-import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository;
-import com.example.android.architecture.blueprints.todoapp.data.source.local.TasksLocalDataSource;
-import com.example.android.architecture.blueprints.todoapp.data.source.local.ToDoDatabase;
-import com.example.android.architecture.blueprints.todoapp.statistics.domain.usecase.GetStatistics;
-import com.example.android.architecture.blueprints.todoapp.tasks.domain.filter.FilterFactory;
-import com.example.android.architecture.blueprints.todoapp.tasks.domain.usecase.ActivateTask;
-import com.example.android.architecture.blueprints.todoapp.tasks.domain.usecase.ClearCompleteTasks;
-import com.example.android.architecture.blueprints.todoapp.tasks.domain.usecase.CompleteTask;
-import com.example.android.architecture.blueprints.todoapp.tasks.domain.usecase.GetTasks;
-import com.example.android.architecture.blueprints.todoapp.util.AppExecutors;
+import com.zq.diary.source.TasksDataSource;
+import com.zq.diary.source.TasksRepository;
+import com.zq.diary.source.local.TasksLocalDataSource;
+import com.zq.diary.source.local.ToDoDatabase;
+import com.zq.diary.statistics.domain.usecase.GetStatistics;
+import com.zq.diary.content.domain.filter.FilterFactory;
+import com.zq.diary.content.domain.usecase.ActivateTask;
+import com.zq.diary.content.domain.usecase.ClearCompleteTasks;
+import com.zq.diary.content.domain.usecase.CompleteTask;
+import com.zq.diary.content.domain.usecase.GetTasks;
+import com.zq.diary.util.AppExecutors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
