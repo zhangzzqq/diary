@@ -25,23 +25,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.zq.diary.content.TasksActivity"
+            android:name="com.zq.diary.tasks.TasksActivity"
             android:theme="@style/AppTheme.OverlapSystemBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.zq.diary.contentdetail.TaskDetailActivity" />
+        <activity android:name="com.zq.diary.taskdetail.TaskDetailActivity" />
         <activity android:name="com.zq.diary.addedittask.AddEditTaskActivity" />
         <activity
             android:name="com.zq.diary.statistics.StatisticsActivity"
-            android:parentActivityName="com.zq.diary.content.TasksActivity"
+            android:parentActivityName="com.zq.diary.tasks.TasksActivity"
             tools:ignore="UnusedAttribute">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.zq.diary.content.TasksActivity" />
+                android:value="com.zq.diary.tasks.TasksActivity" />
         </activity>
     </application>
 

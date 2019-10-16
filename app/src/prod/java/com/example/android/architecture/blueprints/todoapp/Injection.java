@@ -17,22 +17,13 @@
 package com.example.android.architecture.blueprints.todoapp;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
-import com.zq.diary.addedittask.domain.usecase.DeleteTask;
-import com.zq.diary.addedittask.domain.usecase.GetTask;
-import com.zq.diary.addedittask.domain.usecase.SaveTask;
-import com.zq.diary.source.TasksDataSource;
-import com.zq.diary.source.TasksRepository;
-import com.zq.diary.source.local.TasksLocalDataSource;
-import com.zq.diary.source.local.ToDoDatabase;
-import com.zq.diary.source.remote.TasksRemoteDataSource;
-import com.zq.diary.statistics.domain.usecase.GetStatistics;
-import com.zq.diary.content.domain.filter.FilterFactory;
-import com.zq.diary.content.domain.usecase.ActivateTask;
-import com.zq.diary.content.domain.usecase.ClearCompleteTasks;
-import com.zq.diary.content.domain.usecase.CompleteTask;
-import com.zq.diary.content.domain.usecase.GetTasks;
+import com.zq.diary.data.source.TasksDataSource;
+import com.zq.diary.data.source.TasksRepository;
+import com.zq.diary.data.source.local.TasksLocalDataSource;
+import com.zq.diary.data.source.local.ToDoDatabase;
+import com.zq.diary.data.source.remote.TasksRemoteDataSource;
 import com.zq.diary.util.AppExecutors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -49,41 +40,5 @@ public class Injection {
         return TasksRepository.getInstance(TasksRemoteDataSource.getInstance(),
                 TasksLocalDataSource.getInstance(new AppExecutors(),
                         database.taskDao()));
-    }
-
-    public static GetTasks provideGetTasks(@NonNull Context context) {
-        return new GetTasks(provideTasksRepository(context), new FilterFactory());
-    }
-
-    public static UseCaseHandler provideUseCaseHandler() {
-        return UseCaseHandler.getInstance();
-    }
-
-    public static GetTask provideGetTask(Context context) {
-        return new GetTask(Injection.provideTasksRepository(context));
-    }
-
-    public static SaveTask provideSaveTask(Context context) {
-        return new SaveTask(Injection.provideTasksRepository(context));
-    }
-
-    public static CompleteTask provideCompleteTasks(Context context) {
-        return new CompleteTask(Injection.provideTasksRepository(context));
-    }
-
-    public static ActivateTask provideActivateTask(Context context) {
-        return new ActivateTask(Injection.provideTasksRepository(context));
-    }
-
-    public static ClearCompleteTasks provideClearCompleteTasks(Context context) {
-        return new ClearCompleteTasks(Injection.provideTasksRepository(context));
-    }
-
-    public static DeleteTask provideDeleteTask(Context context) {
-        return new DeleteTask(Injection.provideTasksRepository(context));
-    }
-
-    public static GetStatistics provideGetStatistics(Context context) {
-        return new GetStatistics(Injection.provideTasksRepository(context));
     }
 }
