@@ -180,26 +180,26 @@ public class TasksLocalDataSource implements TasksDataSource {
 
     @Override
     public void deleteAllTasks() {
-//        Runnable deleteRunnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                mTasksDao.deleteTasks();
-//            }
-//        };
-//
-//        mAppExecutors.diskIO().execute(deleteRunnable);
+        Runnable deleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mTasksDao.deleteTasks();
+            }
+        };
+
+        mAppExecutors.diskIO().execute(deleteRunnable);
     }
 
     @Override
     public void deleteTask(@NonNull final String taskId) {
-//        Runnable deleteRunnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                mTasksDao.deleteTaskById(taskId);
-//            }
-//        };
-//
-//        mAppExecutors.diskIO().execute(deleteRunnable);
+        Runnable deleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mTasksDao.deleteTaskById(taskId);
+            }
+        };
+
+        mAppExecutors.diskIO().execute(deleteRunnable);
     }
 
     @VisibleForTesting
