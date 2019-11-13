@@ -17,8 +17,14 @@
 package com.zq.diary.tasks;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.zq.diary.addedittask.AddEditTaskActivity;
 import com.zq.diary.data.Task;
 import com.zq.diary.data.source.TasksDataSource;
@@ -41,10 +47,14 @@ public class TasksPresenter implements TasksContract.Presenter {
     private final TasksContract.View mTasksView;
 
     private TasksFilterType mCurrentFiltering = TasksFilterType.ALL_TASKS;
+    private TasksShareType mTaskShareType = TasksShareType.MAIL;
+    private Activity mActivity;
 
     private boolean mFirstLoad = true;
 
-    public TasksPresenter(@NonNull TasksRepository tasksRepository, @NonNull TasksContract.View tasksView) {
+    public TasksPresenter(TasksActivity tasksActivity, @NonNull TasksRepository tasksRepository,
+                          @NonNull TasksContract.View tasksView) {
+        this.mActivity = tasksActivity;
         mTasksRepository = checkNotNull(tasksRepository, "tasksRepository cannot be null");
         mTasksView = checkNotNull(tasksView, "tasksView cannot be null!");
 
@@ -68,7 +78,7 @@ public class TasksPresenter implements TasksContract.Presenter {
     public void loadTasks(boolean forceUpdate) {
         // Simplification for sample: a network reload will be forced on first load.
 //        loadTasks(forceUpdate || mFirstLoad, true);
-        loadTasks(forceUpdate , true);
+        loadTasks(forceUpdate, true);
         mFirstLoad = false;
     }
 
@@ -217,6 +227,13 @@ public class TasksPresenter implements TasksContract.Presenter {
         loadTasks(false, false);
     }
 
+    @Override
+    public void exportRecording() {
+
+        showShareDialog(mActivity);
+
+    }
+
     /**
      * Sets the current task filtering type.
      *
@@ -233,5 +250,128 @@ public class TasksPresenter implements TasksContract.Presenter {
     public TasksFilterType getFiltering() {
         return mCurrentFiltering;
     }
+
+
+
+
+    /**
+     * 弹出分享列表
+     */
+    private void showShareDialog( Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("选择分享类型");
+        builder.setItems(new String[]{"邮件", "短信", "其他"}, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+                switch (which) {
+                    case 0:
+                       mTaskShareType=TasksShareType.MAIL;
+                        break;
+                    case 1:
+                        mTaskShareType=TasksShareType.SMS;
+                        break;
+                    case 3:
+                        mTaskShareType=TasksShareType.OTHER;
+                        break;
+                    default:
+                        break;
+                }
+
+                loadTasks();
+
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+
+
+
+    public void loadTasks() {
+        mTasksRepository.getTasks(new TasksDataSource.LoadTasksCallback() {
+            @Override
+            public void onTasksLoaded(List<Task> tasks) {
+                List<Task> tasksToShow = new ArrayList<Task>();
+                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                    EspressoIdlingResource.decrement(); // Set app as idle.
+                }
+                tasksToShow.addAll(tasks);
+                String content  =new Gson().toJson(tasksToShow);
+                    switch (mTaskShareType){
+                        case SMS:
+                            sendSMS(mActivity,content);
+                            break;
+                        case MAIL:
+
+                            sendMail(mActivity,content);
+                            break;
+                        case OTHER:
+                            //调用系统分享
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.setType("text/plain");
+                            intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+                            intent.putExtra(Intent.EXTRA_TEXT, content);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mActivity.startActivity(Intent.createChooser(intent, "share"));
+                            break;
+
+                    }
+
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+//                mTasksView.showLoadingTasksError();
+            }
+        });
+
+
+
+    }
+
+
+    /**
+     * 发送邮件
+     *
+     * @@param emailBody
+     */
+    private void sendMail(Activity activity, String emailUrl) {
+        Intent email = new Intent(android.content.Intent.ACTION_SEND);
+        email.setType("plain/text");
+
+        String emailBody =  emailUrl;
+        //邮件主题
+        email.putExtra(android.content.Intent.EXTRA_SUBJECT, "便签");
+        //邮件内容
+        email.putExtra(android.content.Intent.EXTRA_TEXT, emailBody);
+
+        activity. startActivityForResult(Intent.createChooser(email, "请选择邮件发送内容"), 1001);
+    }
+
+
+    /**
+     * 发短信
+     */
+    private void sendSMS(Activity activity, String webUrl) {
+        String smsBody =  webUrl;
+        Uri smsToUri = Uri.parse("smsto:");
+        Intent sendIntent = new Intent(Intent.ACTION_VIEW, smsToUri);
+        //sendIntent.putExtra("address", "123456"); // 电话号码，这行去掉的话，默认就没有电话
+        //短信内容
+        sendIntent.putExtra("sms_body", smsBody);
+        sendIntent.setType("vnd.android-dir/mms-sms");
+        activity.startActivityForResult(sendIntent, 1002);
+    }
+
 
 }

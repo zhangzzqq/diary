@@ -162,8 +162,11 @@ public class TasksFragment extends Fragment implements TasksContract.View {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_clear:
-                mPresenter.clearCompletedTasks();
+//            case R.id.menu_clear:
+////                mPresenter.clearCompletedTasks();
+//                break;
+                case R.id.menu_export:
+                mPresenter.exportRecording();
                 break;
             case R.id.menu_filter:
                 showFilteringPopUpMenu();

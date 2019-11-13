@@ -111,4 +111,8 @@ dependencies {
     androidTestImplementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     androidTestImplementation "androidx.appcompat:appcompat:$appCompatVersion"
     androidTestImplementation "com.google.android.material:material:$materialVersion"
+
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    
 }

@@ -16,6 +16,8 @@
 
 package com.zq.diary.tasks;
 
+import android.app.Activity;
+
 import androidx.annotation.NonNull;
 
 import com.zq.diary.BaseView;
@@ -81,6 +83,8 @@ public interface TasksContract {
         void activateTask(@NonNull Task activeTask);
 
         void clearCompletedTasks();
+
+        void exportRecording();
 
         void setFiltering(TasksFilterType requestType);
 

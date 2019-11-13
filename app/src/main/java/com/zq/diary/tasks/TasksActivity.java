@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.zq.diary.data.Task;
 import com.zq.diary.test.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.zq.diary.statistics.StatisticsActivity;
@@ -73,7 +74,7 @@ public class TasksActivity extends AppCompatActivity {
         }
 
         // Create the presenter
-        mTasksPresenter = new TasksPresenter(
+        mTasksPresenter = new TasksPresenter(TasksActivity.this,
                 Injection.provideTasksRepository(getApplicationContext()), tasksFragment);
 
         // Load previously saved state, if available.
